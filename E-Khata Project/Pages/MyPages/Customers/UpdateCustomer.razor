@@ -1,0 +1,137 @@
+﻿@page "/updatecustomer"
+@page "/updatecustomer/{cid:int}"
+@inject NavigationManager navman;
+@inject SessionModel sm;
+
+<PageTitle>Update Customer</PageTitle>
+@if (sm.checklogin != null)
+{
+    <div class="conatiner">
+        <div class="card">
+            <div class="container-fluid text-center text-white">
+                <h5 class="leadconfirm">Update Customer</h5>
+            </div>
+            <div class="card-body subcard">
+                <EditForm Model="customer" OnValidSubmit="updatecustomer">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                    @foreach (var item in custdata)
+                    {
+                        <div class="form-group">
+                            <label class="form-label" for="CustID">Customer ID</label>
+                            <InputText id="CustID" @bind-Value="data" class="form-control" disabled placeholder="@item.customerid" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="CustName">Customer Name</label>
+                            <InputText id="CustName" @bind-Value="customer.name" class="form-control" placeholder="@item.name" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="CustContact">Contact</label>
+                            <InputText id="CustContact" @bind-Value="customer.contact" class="form-control" placeholder="@item.contact" />
+                        </div>
+
+                        <div>
+                            <button class="btn btn-primary" type="submit">Update</button>
+                        </div>
+                    }
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Warning!</strong> You are not logged in. Please login to continue.
+    </div>
+    <button class="btn btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    .subcard {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 20px;
+        width: auto;
+        font-weight: 500;
+        font-size: 1.2rem;
+    }
+
+    .form-label {
+        font-size: 1.3rem;
+    }
+
+    .form-select., .form-control {
+        border-radius: 10px;
+    }
+
+    .selectinfo {
+        font-size: 1.2rem;
+        letter-spacing: 0.1em;
+    }
+
+    .btn {
+        border-radius: 10px;
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    .form-floating {
+        margin: 10px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        width: 70%;
+        border-radius: 30px;
+        margin: 10px 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .leadconfirm {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        letter-spacing: 0.05em;
+        font-size: 2.5rem;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public int cid { get; set; }
+    public string data = "";
+    List<CustomersModel> custdata = new List<CustomersModel>();
+
+    CustomersModel customer = new CustomersModel();
+
+    protected void updatecustomer()
+    {
+        customer.customerid = cid;
+        CustomersDBControl.updatecustomer(customer);
+        navman.NavigateTo("customerhome");
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        custdata = CustomersDBControl.showcustomer(cid);
+        return base.OnInitializedAsync();
+    }
+
+    protected void navtologin()
+    {
+        navman.NavigateTo("/");
+    }
+}

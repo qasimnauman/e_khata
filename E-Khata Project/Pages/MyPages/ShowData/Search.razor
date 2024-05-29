@@ -1,0 +1,188 @@
+﻿@page "/search"
+@inject NavigationManager navman;
+@inject SessionModel sm;
+
+<PageTitle>Search</PageTitle>
+
+@if(sm.checklogin != null)
+{
+    <div class="container">
+        <div class="card">
+            <div class="container-fluid text-white text-center">
+                <h2 class="leadconfirm">Search</h2>
+            </div>
+            <div class="card-body subcard">
+                <EditForm Model="cat">
+                    <div class="form-floating">
+                        <InputSelect @bind-Value="catid" class="form-select" id="floatingSelectGrid">
+                            @foreach (var item in newcat)
+                            {
+                                <option value="@item.category_id">@item.cat_name</option>
+                            }
+                        </InputSelect>
+                        <label for="floatingSelectGrid">Select Category</label>
+                    </div>
+                    <div class="form-floating">
+                        <div class="text-center">
+                            <button @onclick="search" class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="card">
+            <div class="container-fluid text-center text-white">
+                <h5 class="leadconfirm">Products in Category</h5>
+            </div>
+            <div class="card-body">
+                @if (check)
+                {
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Product Name</th>
+                                <th>Product Price</th>
+                                <th>Product Quantity</th>
+                                <th>Product Category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in newprod)
+                            {
+                                <tr>
+                                    <td>@item.productid</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.price</td>
+                                    <td>@item.quantity</td>
+                                    <td>@item.category_id</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="alert text-center alert-danger" role="alert">
+                        <strong>Warning!</strong> You are not logged in. Please login to continue.
+                    </div>
+                </div>
+                <div class="col">
+                    <button class="btn text-center btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    .form-floating{
+        margin-top: 15px;
+        opacity: 0.9;
+    }
+
+    .subcard {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 20px;
+        width: auto;
+        font-weight: 500;
+        font-size: 1.2rem;
+    }
+
+    .btn{
+        font-weight: 500;
+        font-size: 1.2rem;
+        width: 50%;
+        height: 40px;
+        border-radius: 5px;
+    }
+
+    .form-label {
+        font-size: 1.3rem;
+    }
+
+    .form-select., .form-control {
+        border-radius: 10px;
+    }
+
+    .selectinfo {
+        font-size: 1.2rem;
+        letter-spacing: 0.1em;
+    }
+
+    .btn {
+        border-radius: 10px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    .form-floating {
+        margin: 10px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        width: 70%;
+        border-radius: 30px;
+        margin: 10px 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .leadconfirm {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        letter-spacing: 0.05em;
+        font-size: 2rem;
+    }
+
+    .table{
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+</style>
+
+@code {
+    public int catid = 0;
+    public bool check = false;
+    CategoriesModel cat = new CategoriesModel();
+    List<CategoriesModel> newcat = new List<CategoriesModel>();
+    List<ProductsModel> newprod = new List<ProductsModel>();
+
+    protected void search()
+    {
+        newprod = ProductsDBControl.Getproductbycat(catid);
+        check = true;
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        newcat = CategoriesDBControl.Showcategories();
+        return base.OnInitializedAsync();
+    }
+
+    protected void navtologin()
+    {
+        navman.NavigateTo("/");
+    }
+}

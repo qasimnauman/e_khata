@@ -1,0 +1,139 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = E_Khata_Project
+build_property.RootNamespace = E_Khata_Project
+build_property.ProjectDir = E:\E-Khata Project\E-Khata Project\E-Khata Project\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = E:\E-Khata Project\E-Khata Project\E-Khata Project
+build_property._RazorSourceGeneratorDebug = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/FetchData.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmV0Y2hEYXRhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Authentication/ErrorPage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xBdXRoZW50aWNhdGlvblxFcnJvclBhZ2UucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Authentication/LoginLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xBdXRoZW50aWNhdGlvblxMb2dpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Authentication/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xBdXRoZW50aWNhdGlvblxSZWdpc3Rlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Catergories/AddCategories.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xDYXRlcmdvcmllc1xBZGRDYXRlZ29yaWVzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Catergories/CategoriesHome.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xDYXRlcmdvcmllc1xDYXRlZ29yaWVzSG9tZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Customers/AddCustomer.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xDdXN0b21lcnNcQWRkQ3VzdG9tZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Customers/CustomerHome.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xDdXN0b21lcnNcQ3VzdG9tZXJIb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Customers/UpdateCustomer.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xDdXN0b21lcnNcVXBkYXRlQ3VzdG9tZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Orders/AddOrder.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xPcmRlcnNcQWRkT3JkZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Orders/OrderHome.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xPcmRlcnNcT3JkZXJIb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Products/AddProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xQcm9kdWN0c1xBZGRQcm9kdWN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Products/ProductsHome.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xQcm9kdWN0c1xQcm9kdWN0c0hvbWUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Products/UpdateProduct.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xQcm9kdWN0c1xVcGRhdGVQcm9kdWN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/ShowData/Search.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xTaG93RGF0YVxTZWFyY2gucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/ShowData/ShowData.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xTaG93RGF0YVxTaG93RGF0YS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Suppliers/AddSupplier.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xTdXBwbGllcnNcQWRkU3VwcGxpZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Suppliers/SupplierHome.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xTdXBwbGllcnNcU3VwcGxpZXJIb21lLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Suppliers/UpdateSupplier.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xTdXBwbGllcnNcVXBkYXRlU3VwcGxpZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/MyPages/Authentication/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTXlQYWdlc1xBdXRoZW50aWNhdGlvblxMb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-dh8x0kllid
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-oq1gy9cn96
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-9gfz4dd74s
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/E-Khata Project/E-Khata Project/E-Khata Project/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

@@ -1,0 +1,146 @@
+﻿@page "/addcat"
+@page "/addcat/{checkk:int}"
+@inject NavigationManager navv;
+@inject SessionModel sm;
+
+<PageTitle>Add Categories</PageTitle>
+
+@if (sm.checklogin != null)
+{
+    <div class="container">
+        <div class="card">
+            <div class="container-fluid leadconfirm text-white text-center">
+                Add Catergory
+            </div>
+            <div class="card-body subcard">
+                @if (checkk == 1)
+                {
+                    <EditForm Model="newcat" OnValidSubmit="addcatt">
+                        <div class="form-group">
+                            <label class="form-label">Category ID</label>
+                            <InputNumber @bind-Value="newcat.category_id" class="form-control" placeholder="0000" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category Name</label>
+                            <InputText @bind-Value="newcat.cat_name" class="form-control" placeholder="E.g Apparel" />
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Add Category</button>
+                        </div>
+                    </EditForm>
+                }
+                else
+                {
+                    <EditForm Model="newcat" OnValidSubmit="addcat">
+                        <div class="form-group">
+                            <label class="form-label">Category ID</label>
+                            <InputNumber @bind-Value="newcat.category_id" class="form-control" placeholder="0000" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category Name</label>
+                            <InputText @bind-Value="newcat.cat_name" class="form-control" placeholder="E.g Apparel" />
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Add Category</button>
+                        </div>
+                    </EditForm>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger mt-4" role="alert">
+        <strong>Warning!</strong> You are not logged in. Please login to continue.
+    </div>
+    <button class="btn btn-outline-warning mt-2" type="button" @onclick="navtologin">Login</button>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    .subcard {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 20px;
+        font-weight: 500;
+        font-size: 1.2rem;
+    }
+
+    .form-label {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+    }
+
+    .form-select., .form-control {
+        border-radius: 10px;
+    }
+
+    .selectinfo {
+        font-size: 1.2rem;
+        letter-spacing: 0.1em;
+    }
+
+    .btn {
+        border-radius: 10px;
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    .form-floating {
+        margin: 10px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        width: 70%;
+        border-radius: 30px;
+        margin: 10px 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .leadconfirm {
+        font-size: 2.5rem;
+        margin-top: 30px;
+        margin-bottom: 10px;
+        letter-spacing: 0.05em;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public int checkk { get; set; }
+
+    List<CategoriesModel> catlist = new List<CategoriesModel>();
+
+    CategoriesModel newcat = new CategoriesModel();
+
+    public void addcat()
+    {
+        CategoriesDBControl.addcategory(newcat);
+        navv.NavigateTo("/cathome");
+    }
+
+    public void addcatt()
+    {
+        sm.cataddcheck = true;
+        CategoriesDBControl.addcategory(newcat);
+        navv.NavigateTo($"/products/{Convert.ToBoolean(true)}");
+    }
+
+    protected void navtologin()
+    {
+        navv.NavigateTo("/");
+    }
+}

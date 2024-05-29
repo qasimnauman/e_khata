@@ -1,0 +1,226 @@
+﻿@page "/products"
+@page "/products/{checkvalp:bool}"
+@inject SessionModel sm;
+@inject NavigationManager navv;
+
+<PageTitle>Products</PageTitle>
+
+@if(sm.checklogin != null)
+{
+@if(flag == 0)
+{
+        <div class="container">
+            <div class="card">
+                <div class="container-fluid text-center">
+                    <div class="row">
+                        <div class="col">
+                            <p class="leadorder text-white">No Category Found, Please Add one</p>
+                        </div>
+                        <div class="row buttonrow justify-content-center">
+                            <div class="col">
+                                <button @onclick="gotocat" class="btn btn-primary">Add Category</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+}
+else
+{
+        <div class="container">
+            <div class="container-fluid text-center">
+                <div class="row">
+                    <div class="col">
+                        <h2 class="leadorder text-white">Products Home</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="container-fluid text-center">
+                <div class="row buttonrow">
+                    <div class="col btncol text-end">
+                        <button @onclick="showproducts" class="btn btn-primary">Show Products</button>
+                    </div>
+                    <div class="col btncol text-start">
+                        <button @onclick="gotoaddproduct" class="btn btn-primary">Add Product</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <table class="table table-bordered">
+                <thead class="thead">
+                    <tr>
+                        <td>Product ID</td>
+                        <td>Name</td>
+                        <td>Price</td>
+                        <td>Quantity</td>
+                        <td>Category ID</td>
+                    </tr>
+                </thead>
+                <tbody class="tbody">
+                        @foreach(var item in prodlist)
+                        {
+                        <tr>
+                            <td>@item.productid</td>
+                            <td>@item.Name</td>
+                            <td>@item.price</td>
+                            <td>@item.quantity</td>
+                            <td>@item.category_id</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col text-end">
+                                        <button @onclick="() => update(item.productid)" class="btn btn-primary">Edit</button>
+                                    </div>
+                                    <div class="col text-start">
+                                        <button @onclick="() => deleteproduct(item.productid)" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        }
+                </tbody>
+            </table>
+        </div>
+    }
+}
+else
+{
+    <div class="row alert alert-danger" role="alert">
+        <strong>Warning!</strong> You are not logged in. Please login to continue.
+    </div>
+    <div class="row text-center">
+        <button class="btn btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+    </div>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    form-select {
+        height: 10px;
+    }
+
+    .lead {
+        margin-top: 30px;
+        margin-bottom: 20px;
+        letter-spacing: 0.05em;
+        font-size: 1.5rem;
+    }
+
+    .text-end{
+        padding-right: 20px;
+        padding-left: 20px;
+        margin-right: 20px;
+    }
+
+    .text-start{
+        padding-right: 20px;
+        padding-left: 20px;
+        margin-left: 20px;
+    }
+
+    .leadorder {
+        font-size: 3rem;
+        margin-top: 30px;
+    }
+
+    .subrow {
+        margin-top: 20px;
+    }
+
+    .container {
+        max-width: contain;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .buttonrow {
+        margin-bottom: 30px;
+        margin-top: 40px;
+    }
+
+    .container-fluid {
+        height: auto;
+        font-weight: 600;
+        font-style: normal;
+    }
+
+    .card {
+        border-radius: 40px;
+        text-align: center;
+        margin: 10px 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .table {
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.6); /* Set a subtle background color for headers */
+    }
+
+    .thead{
+        font-size: 1.2rem;
+    }
+
+        .table thead th,
+        .table tbody td {
+            padding: 10px;
+            text-align: left;
+        }
+</style>
+
+
+@code {
+    [Parameter]
+    public bool checkvalp { get; set; }
+
+    public int flag = 0;
+    List<ProductsModel> prodlist = new List<ProductsModel>();
+
+    public void gotocat()
+    {
+        navv.NavigateTo($"/addcat/{1}");
+    }
+
+    public void showproducts()
+    {
+        prodlist = ProductsDBControl.Getproducts();
+    }
+
+    public void update(int pid)
+    {
+        navv.NavigateTo($"/updateproduct/{pid}");
+    }
+
+    public void gotoaddproduct()
+    {
+        navv.NavigateTo("/addproduct");
+    }
+
+    public void deleteproduct(int id)
+    {
+        ProductsDBControl.deleteproduct(id);
+        prodlist = ProductsDBControl.Getproducts();
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        flag = Convert.ToInt32(CategoriesDBControl.checkcatavail());
+        return base.OnInitializedAsync();
+    }
+
+    protected void navtologin()
+    {
+        navv.NavigateTo("/");
+    }
+}

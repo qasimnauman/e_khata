@@ -1,0 +1,208 @@
+﻿@inject SessionModel sm;
+@inject NavigationManager navman;
+@page "/addorder";
+
+<PageTitle>Add Orders</PageTitle>
+@if (sm.checklogin != null)
+{
+    <section>
+        <div class="container">
+            @if (count == 0)
+            {
+                <div class="card">
+                    <div class="card-header text-white leadplace">
+                        Customers and Product Selection
+                    </div>
+                    <div class="card-body">
+                        <EditForm Model="orders" OnValidSubmit="addorder">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+
+                            <div class="row g-2">
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <InputSelect @bind-Value="prodid" class="form-select" id="floatingSelect" required>
+                                            @foreach (var item in productlist)
+                                            {
+                                                <option value="@item.productid">@item.Name</option>
+                                            }
+                                        </InputSelect>
+                                        <label for="floatingSelect">Product</label>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-floating">
+                                        <InputSelect @bind-Value="orders.customerid" class="form-select" id="floatingSelect" required>
+                                            @foreach (var item in custlist)
+                                            {
+                                                <option value="@item.customerid">@item.name</option>
+                                            }
+                                        </InputSelect>
+                                        <label for="floatingSelect">Customer</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row g-2 mt-3">
+                                <div class="col-md">
+                                    <button type="button" @onclick="convertt" class="btn btn-primary"> Next</button>
+                                </div>
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
+            }
+            @if (count == 1 || count > 1)
+            {
+                <div class="card">
+                    <div class="card-header text-white leadconfirm">
+                        Order Confirmation
+                    </div>
+                    <div class="card-body">
+                        <EditForm Model="orders" OnValidSubmit="addorder">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+
+                            <div class="row g-2 subcard">
+                                <div class="col-md">
+                                    <p class="text-black selectinfo">Selected Product: @productlist.FirstOrDefault(p => p.productid == prodid)?.Name</p>
+                                </div>
+                                <div class="col-md">
+                                    <p class="text-black selectinfo">Customer: @custlist.FirstOrDefault(c => c.customerid == orders.customerid)?.name</p>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md">
+                                    <div class="form-floating mb-3">
+                                        <InputNumber min="1" max="@quantity" @bind-Value="orders.quantity" class="form-control" id="floatingInput" />
+                                        <label for="floatingInput">Quantity</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md">
+                                    <button type="submit" class="btn btn-primary"> Add Order</button>
+                                </div>
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
+            }
+            else
+            {
+
+            }
+        </div>
+    </section>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Warning!</strong> You are not logged in. Please login to continue.
+    </div>
+    <button class="btn btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    .subcard {
+        background-color: rgba(255, 255, 255, 0.6);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 20px;
+    }
+
+    .form-select., .form-control {
+        border-radius: 10px;
+    }
+
+    .selectinfo {
+        font-size: 1.2rem;
+        letter-spacing: 0.1em;
+    }
+
+    .btn {
+        border-radius: 10px;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .form-floating {
+        margin: 10px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        width: 100%;
+        border-radius: 40px;
+        text-align: center;
+        margin: 10px 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .leadplace {
+        margin-top: 30px;
+        margin-bottom: 20px;
+        letter-spacing: 0.05em;
+        font-size: 1.5rem;
+    }
+
+    .leadconfirm {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        letter-spacing: 0.05em;
+        font-size: 1.5rem;
+    }
+
+</style>
+
+@code {
+    OrdersModel orders = new OrdersModel();
+    List<ProductsModel> productlist = new List<ProductsModel>();
+    List<CustomersModel> custlist = new List<CustomersModel>();
+    public bool check = false;
+    public int count = 0;
+    public int test = 0;
+    public int prodid = 0;
+    public int price = 0;
+    public int quantity = 0;
+
+    public void addorder()
+    {
+        Random rnd = new Random();
+        orders.orderid = rnd.Next(10000);
+        orders.productid = prodid;
+        orders.billamount = price * orders.quantity;
+        orders.orderdate = DateTime.Now;
+        OrdersDBControl.addordres(orders);
+        navman.NavigateTo("orderhome");
+    }
+
+    public void convertt()
+    {
+        check = true;
+        count++;
+        price = Convert.ToInt32(ProductsDBControl.Getproductamount(prodid));
+        quantity = Convert.ToInt32(ProductsDBControl.getquantity(prodid));
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        custlist = CustomersDBControl.showcustomer();
+        productlist = ProductsDBControl.Getproducts();
+        return base.OnInitializedAsync();
+    }
+
+    protected void navtologin()
+    {
+        navman.NavigateTo("/");
+    }
+}

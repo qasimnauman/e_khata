@@ -1,0 +1,135 @@
+﻿@page "/report"
+@inject SessionModel sm;
+@inject NavigationManager navman;
+
+@if(sm.checklogin !=null)
+{
+    <div class="container">
+        <div class="card">
+            <div class="container-fluid text-white text-center">
+                <h2 class="leadconfirm">Sales Report</h2>
+            </div>
+            <div class="card-body subcard">
+                <h5 class="leadconfirm">Summary</h5>
+                @foreach (var item in stats)
+                {
+                    <p class="lead">Total Orders Taken : @item.totalorderstaken</p>
+                    <p class="lead">Total Orders Completed : @item.totalordercomplete</p>
+                    <p class="lead">Total Sales Generated : Rs @item.totalsales </p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    Sales Report
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Sales Summary</h5>
+                    @foreach(var item in stats)
+                    {
+                        <p>Total Orders Taken : @item.totalorderstaken</p>
+                        <p>Total Orders Completed : @item.totalordercomplete</p>
+                        <p>Total Sales Generated : Rs @item.totalsales </p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="alert text-center alert-danger" role="alert">
+                        <strong>Warning!</strong> You are not logged in. Please login to continue.
+                    </div>
+                </div>
+                <div class="col">
+                    <button class="btn text-center btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    .subcard {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 20px;
+        width: auto;
+        font-weight: 500;
+        font-size: 1.2rem;
+    }
+
+    .form-label {
+        font-size: 1.3rem;
+    }
+
+    .form-select., .form-control {
+        border-radius: 10px;
+    }
+
+    .selectinfo {
+        font-size: 1.2rem;
+        letter-spacing: 0.1em;
+    }
+
+    .btn {
+        border-radius: 10px;
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    .form-floating {
+        margin: 10px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        width: 70%;
+        border-radius: 30px;
+        margin: 10px 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .leadconfirm {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        letter-spacing: 0.05em;
+        font-size: 2rem;
+    }
+</style>
+
+@code {
+    List<StatsModel> stats = new List<StatsModel>();
+
+    protected override Task OnInitializedAsync()
+    {
+        stats = StatsDBControl.GetStats();
+        return base.OnInitializedAsync();
+    }
+
+    protected void navtologin()
+    {
+        navman.NavigateTo("/");
+    }
+}

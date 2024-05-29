@@ -1,0 +1,371 @@
+﻿@page "/orderhome"
+@inject NavigationManager navman;
+@inject SessionModel sm;
+
+<PageTitle>Order Home</PageTitle>
+
+@if (sm.checklogin != null)
+{
+    <section>
+        @if (noofproducts == 0 && noofcustomers == 0)
+        {
+            <div class="container">
+                <div class="card">
+                    <div class="container-fluid text-center">
+                        <div class="row">
+                            <div class="col">
+                                <p class="lead text-white">No Products or Customers Found, Please Add One</p>
+                            </div>
+                            <div class="row buttonrow justify-content-center">
+                                <div class="col">
+                                    <button @onclick="gotoprodadd" class="btn btnn btn-primary">Add Product</button>
+                                    <button @onclick="gotocustadd" class="btn btnn btn-primary">Add Customer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (noofproducts == 0)
+        {
+            <div class="container">
+                <div class="card">
+                    <div class="container-fluid text-center">
+                        <div class="row">
+                            <div class="col">
+                                <p class="lead text-white">No Products Found, Please Add One</p>
+                            </div>
+                            <div class="row buttonrow justify-content-center">
+                                <div class="col">
+                                    <button @onclick="gotoprodadd" class="btn btnn btn-primary">Add Product</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (noofcustomers == 0)
+        {
+            <div class="container">
+                <div class="card">
+                    <div class="container-fluid text-center">
+                        <div class="row">
+                            <div class="col">
+                                <p class="lead text-white">No Customers Found, Please Add One</p>
+                            </div>
+                            <div class="row buttonrow justify-content-center">
+                                <div class="col">
+                                    <button @onclick="gotocustadd" class="btn btnn btn-primary">Add Customer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="container">
+                <div class="container-fluid text-center">
+                    <div class="row">
+                        <div class="col">
+                            <h2 class="leadorder text-white">Orders Home</h2>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="row subrow">
+                            <div class="col">
+                                <p class="subcard">Current Total Order : @totalorders</p>
+                            </div>
+                            <div class="col">
+                                <p class="subcard">Current Pending Order : @pendingorder</p>
+                            </div>
+                            <div class="col">
+                                <p class="subcard">Current Completed Order : @completeorders</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ctnbtn">
+                <div class="container-fluid text-center">
+                    <div class="text-center">
+                        <button @onclick="gotoaddorder" class="btn btn-primary">Place New Order</button>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="leadorder text-white">Current Orders</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="container-fluid">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td>Order ID</td>
+                                <td>Order Date</td>
+                                <td>Customer ID</td>
+                                <td>Product ID</td>
+                                <td>Quantity</td>
+                                <td>Amount</td>
+                                <td>Status</td>
+                                <td>Actions</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in orders)
+                            {
+                                <tr>
+                                    <td>@item.orderid</td>
+                                    <td>@item.orderdate</td>
+                                    <td>@item.customerid</td>
+                                    <td>@item.productid</td>
+                                    <td>@item.quantity</td>
+                                    <td>@item.billamount</td>
+                                    <td>@item.status</td>
+                                    <td>
+                                        @if (item.status == "Pending")
+                                        {
+                                            <button @onclick="() => updatestatus(item.orderid)" class="btn btn-sm btn-outline-light" type="button">Update Status</button>
+                                            @if (checkstatusupdate && ordid == item.orderid)
+                                            {
+                                                <div class="form-floating">
+                                                    <select @bind="status" class="form-select" id="floatingSelect" required>
+                                                        <option value="Pending">Pending</option>
+                                                        <option value="Complete">Complete</option>
+                                                    </select>
+                                                    <label for="floatingSelect">Status</label>
+                                                </div>
+                                                <button @onclick="() => UpdateStatus(item.orderid)" class="btn btn-sm btn-danger" type="button">Update Status</button>
+                                            }
+                                        }
+                                        else if (item.status == "Complete")
+                                        {
+                                            <button @onclick="() => deleteorder(item.orderid, item.billamount)" type="button" class="btn btn-sm btn-outline-danger">Commit</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </section>
+}
+else
+{
+    <div class="container">
+        <div class="card">
+            <div class="container-fluid text-center">
+                <div class="row">
+                    <div class="col">
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Warning!</strong> You are not logged in. Please login to continue.
+                        </div>
+                    </div>
+                    <div class="row buttonrow justify-content-center">
+                        <div class="col">
+                            <button class="btn btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    form-select {
+        height: 10px;
+    }
+
+    .lead {
+        margin-top: 30px;
+        margin-bottom: 20px;
+        letter-spacing: 0.05em;
+        font-size: 1.5rem;
+    }
+
+    .leadorder {
+        font-size: 3rem;
+        margin-top: 30px;
+    }
+
+    .subrow {
+        margin-top: 20px;
+    }
+
+    .container {
+        max-width: contain;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .buttonrow {
+        margin-bottom: 30px;
+    }
+
+    .container-fluid {
+        height: auto;
+        font-weight: 600;
+        font-style: normal;
+    }
+
+    /* .ctnbtn{
+            max-width: contain;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        } */
+
+    .card {
+        border-radius: 40px;
+        text-align: center;
+        margin: 10px 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* .btnn {
+            margin: 10px;
+            text-align: center;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            letter-spacing: 0.05em;
+        }
+
+            .btnn:hover {
+                background-color: rgba(130, 94, 92);
+                border: none;
+            } */
+
+    /* .btn{
+            font-size: 1.2rem;
+            border-radius: 10px;
+        } */
+
+    /*        .btn:hover {
+                background-color: rgba(130, 94, 92);
+                border: none;
+        }
+     */
+    .subcard {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        margin-top: 10px;
+        padding: 10px;
+        color: white;
+    }
+
+        .subcard:hover {
+            background-color: rgba(0, 0, 0, 0.5)
+        }
+
+    .table {
+        width: 100%;
+        border-radius: 10px;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.6); /* Set a subtle background color for headers */
+    }
+
+        .table thead th,
+        .table tbody td {
+            padding: 10px;
+            text-align: left;
+        }
+</style>
+
+@code {
+    public int totalorders = 0;
+    public int pendingorder = 0;
+    public int completeorders = 0;
+    public bool checkstatusupdate = false;
+    public string status = "";
+    public string ordstatus = "";
+    public int ordid = 0;
+    public int noofproducts = 0;
+    public int noofcustomers = 0;
+    List<OrdersModel> orders = new List<OrdersModel>();
+
+    protected void gotoaddorder()
+    {
+        navman.NavigateTo("addorder");
+    }
+
+    protected void UpdateStatus(int ordid)
+    {
+        OrdersDBControl.updateorderstatus(ordid, status);
+        updatedata();
+        checkstatusupdate = false;
+    }
+
+    protected void deleteorder(int oid, int sales)
+    {
+        OrdersDBControl.deleteorder(oid, sales);
+        updatedata();
+    }
+
+    protected void updatedata()
+    {
+        completeorders = Convert.ToInt32(OrdersDBControl.getcompleteorders());
+        pendingorder = Convert.ToInt32(OrdersDBControl.getpendingorders());
+        totalorders = Convert.ToInt32(OrdersDBControl.gettotalorders());
+        orders = OrdersDBControl.showorderdata();
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        noofproducts = Convert.ToInt32(ProductsDBControl.getnoofproducts());
+        noofcustomers = Convert.ToInt32(CustomersDBControl.getnoofcust());
+        completeorders = Convert.ToInt32(OrdersDBControl.getcompleteorders());
+        pendingorder = Convert.ToInt32(OrdersDBControl.getpendingorders());
+        totalorders = Convert.ToInt32(OrdersDBControl.gettotalorders());
+        orders = OrdersDBControl.showorderdata();
+        return base.OnInitializedAsync();
+    }
+
+    public void updatestatus(int ord)
+    {
+        ordstatus = OrdersDBControl.getordstatus(ord).ToString();
+        ordid = ord; // Save the order ID for comparison in the UI
+        checkstatusupdate = true;
+    }
+
+    protected void gotocustadd()
+    {
+        navman.NavigateTo($"addcustomer/{1}");
+    }
+
+    protected void gotoprodadd()
+    {
+        navman.NavigateTo($"addproduct/{1}");
+    }
+
+    protected void navtologin()
+    {
+        navman.NavigateTo("/");
+    }
+}

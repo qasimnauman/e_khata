@@ -1,0 +1,133 @@
+﻿@page "/addcustomer"
+@page "/addcustomer/{checkv:int}"
+@inject NavigationManager navman;
+@inject SessionModel sm;
+
+<PageTitle>Add Customer</PageTitle>
+@if (sm.checklogin != null)
+{
+    <div class="container">
+        <div class="card">
+            <div class="container-fluid text-center leadconfirm text-white">
+                Add Customer
+            </div>
+            <div class="card-body subcard">
+                <EditForm Model="customer" OnValidSubmit="addcustomer">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="form-group">
+                        <label class="form-label">Customer ID</label>
+                        <InputNumber @bind-Value="customer.customerid" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Customer Name</label>
+                        <InputText @bind-Value="customer.name" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <lable class="form-label">Contact</lable>
+                        <InputText @bind-Value="customer.contact" class="form-control" />
+                    </div>
+
+                    <div>
+                        <button class="btn btn-primary" type="submit">Add Customer</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+        <div>
+            
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Warning!</strong> You are not logged in. Please login to continue.
+    </div>
+    <button class="btn btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    .subcard {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 20px;
+        width: auto;
+        font-weight: 500;
+        font-size: 1.2rem;
+    }
+
+    .form-label {
+        font-size: 1.3rem;
+    }
+
+    .form-select., .form-control {
+        border-radius: 10px;
+    }
+
+    .selectinfo {
+        font-size: 1.2rem;
+        letter-spacing: 0.1em;
+    }
+
+    .btn {
+        border-radius: 10px;
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    .form-floating {
+        margin: 10px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        width: 70%;
+        border-radius: 30px;
+        margin: 10px 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .leadconfirm {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        letter-spacing: 0.05em;
+        font-size: 2.5rem;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public int checkv { get; set; }
+
+    CustomersModel customer = new CustomersModel();
+
+    public void addcustomer()
+    {
+        CustomersDBControl.addcustomer(customer);
+        if(checkv == 1)
+        {
+            navman.NavigateTo("orderhome");
+        }
+        navman.NavigateTo("customerhome");
+    }
+
+    protected void navtologin()
+    {
+        navman.NavigateTo("/");
+    }
+}

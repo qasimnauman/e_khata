@@ -1,0 +1,174 @@
+﻿@page "/addproduct"
+@page "/addproduct/{checkval:int}"
+@inject NavigationManager navman;
+@inject CategoriesDBControl catdb;
+@inject SessionModel sm;
+
+<PageTitle>Add Product</PageTitle>
+@if(sm.checklogin != null)
+{
+<section>
+    <div class="container">
+        <div class="card">
+            <div class="container-fluid leadplace text-white text-center">
+                Add Order
+            </div>
+            <div class="card-body subcard">
+                    <EditForm Model="product" OnValidSubmit="Addproduct">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="form-group">
+                            <label class="form-label" for="productName">Product ID</label>
+                            <InputNumber id="productName" @bind-Value="product.productid" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="productName">Product Name</label>
+                            <InputText id="productName" @bind-Value="product.Name" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="productName">Product Price</label>
+                            <InputNumber id="productName" @bind-Value="product.price" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="productName">Quantity</label>
+                            <InputNumber id="productName" @bind-Value="product.quantity" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"> Cat</label>
+                            <InputSelect @bind-Value="product.category_id" class="form-control">
+                                @foreach (var item in catdata)
+                                {
+                                    <option value="@item.category_id">@item.cat_name</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="btn btn-primary">Add Product</button>
+                        </div>
+
+                    </EditForm>
+            </div>
+        </div>
+    </div>
+    
+
+    <div>
+        <p>@message</p>
+    </div>
+    </section>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Warning!</strong> You are not logged in. Please login to continue.
+    </div>
+    <button class="btn btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    .subcard {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 20px;
+        width: auto;
+        font-weight: 500;
+        font-size: 1.2rem;
+    }
+
+    .form-label{
+        font-size: 1.3rem;
+    }
+
+    .form-select., .form-control {
+        border-radius: 10px;
+    }
+
+    .selectinfo {
+        font-size: 1.2rem;
+        letter-spacing: 0.1em;
+    }
+
+    .btn {
+        border-radius: 10px;
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    .form-floating {
+        margin: 10px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        width: 100%;
+        border-radius: 30px;
+        margin: 10px 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .leadplace {
+        margin-top: 30px;
+        margin-bottom: 20px;
+        letter-spacing: 0.05em;
+        font-size: 1.5rem;
+    }
+
+    .leadconfirm {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        letter-spacing: 0.05em;
+        font-size: 1.5rem;
+    }
+</style>
+
+@code {
+    [Parameter]
+    public int checkval { get; set; }
+
+    ProductsModel product = new ProductsModel();
+    public string message = "";
+    List<CategoriesModel> catdata = new List<CategoriesModel>();
+
+    public void Addproduct()
+    {
+        ProductsDBControl.addproduct(product);
+        message = "Product Added Successfully";
+        if(checkval == 1)
+        {
+            navman.NavigateTo("/orderhome");
+        }
+        else
+        {
+            navman.NavigateTo("/products");
+        }
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        checkval = 0;
+        catdata = CategoriesDBControl.Showcategories();
+        return base.OnInitializedAsync();
+    }
+
+    protected void navtologin()
+    {
+        navman.NavigateTo("/");
+    }
+}

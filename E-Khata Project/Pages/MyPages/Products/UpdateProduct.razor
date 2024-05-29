@@ -1,0 +1,164 @@
+﻿@page "/updateproduct"
+@page "/updateproduct/{prodid:int}"
+@inject NavigationManager navman;
+@inject SessionModel sm;
+
+<PageTitle>Update Product</PageTitle>
+
+@if(sm.checklogin != null)
+{
+    <div class="container">
+        <div class="card">
+            <div class="container-fluid leadplace text-white text-center">
+                Update Product
+            </div>
+            <div class="card-body subcard">
+                @foreach (var item in product)
+                {
+                    <EditForm Model="_product" OnValidSubmit="updateproduct">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+
+                        <div class="form-group">
+                            <label class="form-label" for="productName">Product ID</label>
+                            <InputText id="productName" @bind-Value="data" class="form-control" disabled placeholder="@item.productid" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="productName">Product Name</label>
+                            <InputText id="productName" @bind-Value="_product.Name" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="productName">Product Price</label>
+                            <InputNumber id="productName" @bind-Value="_product.price" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="productName">Quantity</label>
+                            <InputNumber id="productName" @bind-Value="_product.quantity" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label"> Cat</label>
+                            <InputSelect @bind-Value="_product.category_id" class="form-control">
+                                @foreach (var item in catdata)
+                                {
+                                    <option value="@item.category_id">@item.cat_name</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </EditForm>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Warning!</strong> You are not logged in. Please login to continue.
+    </div>
+    <button class="btn btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    .subcard {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 20px;
+        width: auto;
+        font-weight: 500;
+        font-size: 1.2rem;
+    }
+
+    .form-label {
+        font-size: 1.3rem;
+    }
+
+    .form-select., .form-control {
+        border-radius: 10px;
+    }
+
+    .selectinfo {
+        font-size: 1.2rem;
+        letter-spacing: 0.1em;
+    }
+
+    .btn {
+        border-radius: 10px;
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    .form-floating {
+        margin: 10px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        width: 100%;
+        border-radius: 30px;
+        margin: 10px 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .leadplace {
+        margin-top: 30px;
+        margin-bottom: 20px;
+        letter-spacing: 0.05em;
+        font-size: 1.5rem;
+    }
+
+    .leadconfirm {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        letter-spacing: 0.05em;
+        font-size: 1.5rem;
+    }
+</style>
+
+
+@code {
+    [Parameter]
+    public int prodid { get; set; }
+    ProductsModel _product = new ProductsModel();
+    public string data = "";
+    List<ProductsModel> product = new List<ProductsModel>();
+    List<CategoriesModel> catdata = new List<CategoriesModel>();
+
+    protected override Task OnInitializedAsync()
+    {
+        catdata = CategoriesDBControl.Showcategories();
+        product = ProductsDBControl.Getproducts(prodid);
+        return base.OnInitializedAsync();
+    }
+
+    public void updateproduct()
+    {
+        _product.productid = prodid;
+        ProductsDBControl.updateproduct(_product);
+        product = ProductsDBControl.Getproducts(prodid);
+        navman.NavigateTo("products");
+    }
+
+    protected void navtologin()
+    {
+        navman.NavigateTo("/");
+    }
+}

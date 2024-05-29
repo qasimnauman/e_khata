@@ -1,0 +1,142 @@
+﻿@page "/updatesupplier"
+@page "/updatesupplier/{supplierid:int}"
+@inject NavigationManager navman;
+@inject SessionModel sm;
+
+<PageTitle>Update Supplier</PageTitle>
+
+@if (sm.checklogin != null)
+{
+    <div class="container">
+        <div class="card">
+            <div class="container-fluid text-center text-white">
+                <h2 class="leadconfirm">Update Supplier</h2>
+            </div>
+            <div class="card-body subcard">
+                <EditForm Model="supmodel" OnValidSubmit="addsupplier">
+                    <div>
+                        <div class="form-group">
+                            <label class="form-label">Supplier ID</label>
+                            <input placeholder="@supplierid" disabled class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Supplier Name</label>
+                            <InputText @bind-Value="supmodel.name" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Contact</label>
+                            <InputText @bind-Value="supmodel.contact_supp" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Type</label>
+                            <InputSelect @bind-Value="supmodel.citytype" class="form-select">
+                                <option value="InCity">In City</option>
+                                <option value="OutCity">Out City</option>
+                            </InputSelect>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Update Supplier</button>
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="alert text-center alert-danger" role="alert">
+                        <strong>Warning!</strong> You are not logged in. Please login to continue.
+                    </div>
+                </div>
+                <div class="col">
+                    <button class="btn text-center btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    .subcard {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-radius: 10px;
+        padding: 10px;
+        margin: 20px;
+        width: auto;
+        font-weight: 500;
+        font-size: 1.2rem;
+    }
+
+    .form-label {
+        font-size: 1.3rem;
+    }
+
+    .form-select., .form-control {
+        border-radius: 10px;
+    }
+
+    .selectinfo {
+        font-size: 1.2rem;
+        letter-spacing: 0.1em;
+    }
+
+    .btn {
+        border-radius: 10px;
+        width: 100%;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+    .form-floating {
+        margin: 10px;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card {
+        width: 70%;
+        border-radius: 30px;
+        margin: 10px 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .leadconfirm {
+        margin-top: 30px;
+        margin-bottom: 10px;
+        letter-spacing: 0.05em;
+        font-size: 2rem;
+    }
+</style>
+
+
+@code {
+    [Parameter]
+    public int supplierid { get; set; }
+
+    SuppliersModel supmodel = new SuppliersModel();
+
+    protected void addsupplier()
+    {
+        supmodel.supplierid = supplierid;
+        SuppliersDBControl.updatesupplier(supmodel);
+        navman.NavigateTo("suphome");
+    }
+
+    protected void navtologin()
+    {
+        navman.NavigateTo("/");
+    }
+}

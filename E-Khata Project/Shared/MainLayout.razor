@@ -1,0 +1,36 @@
+﻿@inherits LayoutComponentBase
+@inject SessionDataModel sessiondm;
+@inject SessionModel sm;
+@inject NavigationManager navman;
+
+<PageTitle>E-Khata Project</PageTitle>
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row row px-4">  
+            <div class="col txtcontain text-end text-white">
+                <p>Welcome @sessiondm.Name</p>
+            </div>
+            <div class="col text-end">
+                <button class="btn" @onclick="logout" >Logout</button>
+            </div>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+
+@code{
+    protected void logout()
+    {
+        sm.checklogin = null;
+        navman.NavigateTo("/");
+    }
+}

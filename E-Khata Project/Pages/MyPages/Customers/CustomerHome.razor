@@ -1,0 +1,163 @@
+﻿@page "/customerhome"
+@inject NavigationManager navman;
+@inject SessionModel sm;
+
+<PageTitle>Customers</PageTitle>
+@if(sm.checklogin != null)
+{
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <h2 class="leadorder text-white text-center" >Customers Home</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="container-fluid">
+            <div class="text-center btnn">
+                <button class="btn btn-primary" @onclick="gotoadd">Add Customer</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="container-fluid">
+            <div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <td>Customer ID</td>
+                            <td>Customer Name</td>
+                            <td>Contact</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in custdata)
+                        {
+                            <tr>
+                                <td>@item.customerid</td>
+                                <td>@item.name</td>
+                                <td>@item.contact</td>
+                                <td>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col">
+                                                <button @onclick="() => gotoupdate(item.customerid)" class="btn btn-primary" type="button">Update</button>
+                                            </div>
+                                            <div class="col">
+                                                <button @onclick="() => deletecust(item.customerid)" class="btn btn-danger" type="button">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="row">
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Warning!</strong> You are not logged in. Please login to continue.
+                    </div>
+                </div>
+                <div class="row">
+                    <button class="btn btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    .btnn{
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .leadorder {
+        font-size: 3rem;
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .btn:hover{
+        zoom: 1.1;
+    }
+
+    .container {
+        max-width: contain;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container-fluid {
+        height: auto;
+        font-weight: 600;
+        font-style: normal;
+    }
+
+    
+    .table {
+        width: 100%;
+        border-radius: 10px;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.6); /* Set a subtle background color for headers */
+    }
+
+        .table thead th,
+        .table tbody td {
+            padding: 10px;
+            text-align: left;
+        }
+</style>
+
+@code {
+    List<CustomersModel> custdata = new List<CustomersModel>();
+    public void gotoadd()
+    {
+        navman.NavigateTo("addcustomer");
+    }
+
+    public void gotoupdate(int cid)
+    {
+        navman.NavigateTo($"/updatecustomer/{cid}");
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        custdata = CustomersDBControl.showcustomer();
+        return base.OnInitializedAsync();
+    }
+
+    protected void deletecust(int cid)
+    {
+        CustomersDBControl.deletecustomer(cid);
+        custdata = CustomersDBControl.showcustomer();
+
+    }
+
+    protected void navtologin()
+    {
+        navman.NavigateTo("/");
+    }
+}

@@ -1,0 +1,69 @@
+﻿<script src="https://kit.fontawesome.com/e5e4409ee6.js" crossorigin="anonymous"></script>
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/index">E-Khata</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass navv" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="index" Match="NavLinkMatch.All">
+                <span><i class="fa-solid fa-house fa-xl"></i> Home </span>
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="products">
+                <span><i class="fa-solid fa-box-open fa-xl"></i> Products </span>
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="customerhome">
+                <span><i class="fa-solid fa-user-group fa-xl"></i> Customer </span>
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="orderhome">
+                <span><i class="fa-solid fa-boxes-packing fa-xl"></i> Orders </span>
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="cathome">
+                <span><i class="fa-solid fa-list fa-xl"></i> Categories </span>
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="suphome">
+                <span><i class="fa-solid fa-truck-field fa-xl"></i> Suppliers </span>
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="search">
+                <span><i class="fa-solid fa-magnifying-glass fa-xl"></i> Search </span>
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="report">
+                <span><i class="fa-solid fa-hand-holding-dollar fa-xl"></i> Report </span>
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+<style>
+    
+</style>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

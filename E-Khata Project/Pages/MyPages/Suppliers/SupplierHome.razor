@@ -1,0 +1,248 @@
+﻿@page "/suphome"
+@inject NavigationManager navman;
+@inject SessionModel sm;
+
+<PageTitle>Suppliers Home</PageTitle>
+
+@if(sm.checklogin != null)
+{
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <h2 class="leadorder text-white text-center">Suppliers Home</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="subrow row">
+                    <div class="col">
+                        <p class="subcard">Total Suppliers @totalsuppliers</p>
+                    </div>
+                    <div class="col">
+                        <p class="subcard">In City Suppliers @incitysuppliers</p>
+                    </div>
+                    <div class="col">
+                        <p class="subcard">Out City Suppliers @outcitysuppliers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ctnbtn">
+        <div class="container-fluid">
+            <div class="text-center btnn">
+                <button type="button" @onclick="gotoaddsup" class="btn btn-primary">Add New Supplier</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <h3 class="leador text-white">Current Suppliers</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="container-fluid">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>Supplier ID</td>
+                        <td>Name</td>
+                        <td>Contact</td>
+                        <td>Type</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in suplist)
+                    {
+                        <tr>
+                            <td>@item.supplierid</td>
+                            <td>@item.name</td>
+                            <td>@item.contact_supp</td>
+                            <td>@item.citytype</td>
+                            <td>
+                                <div class="row">
+                                    <div class="col text-end">
+                                        <button type="button" @onclick="() => updatesupplier(item.supplierid)" class="btn btn-secondary">Update</button>
+                                    </div>
+                                    <div class="col text-start">
+                                        <button type="button" @onclick="() => deletesup(item.supplierid)" class="btn btn-danger">Delete</button>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Warning!</strong> You are not logged in. Please login to continue.
+    </div>
+    <button class="btn btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+}
+
+<style>
+    body {
+        background-image: url("/bg.jpg");
+    }
+
+    .leadorder {
+        font-size: 3rem;
+        margin-top: 30px;
+    }
+
+    .leadord{
+        font-size: 1.5rem;
+        margin-top: 30px;
+    }
+
+    .subrow {
+        margin-top: 20px;
+    }
+
+    .container {
+        max-width: contain;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .buttonrow {
+        margin-bottom: 30px;
+    }
+
+    .btnn{
+        margin: 20px;
+    }
+
+    .container-fluid {
+        height: auto;
+        font-weight: 600;
+        font-style: normal;
+    }
+
+    /* .ctnbtn{
+                max-width: contain;
+                padding: 10px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            } */
+
+    .card {
+        border-radius: 40px;
+        text-align: center;
+        margin: 10px 10px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* .btnn {
+                margin: 10px;
+                text-align: center;
+                font-size: 1.2rem;
+                border-radius: 10px;
+                letter-spacing: 0.05em;
+            }
+
+                .btnn:hover {
+                    background-color: rgba(130, 94, 92);
+                    border: none;
+                } */
+
+    /* .btn{
+                font-size: 1.2rem;
+                border-radius: 10px;
+            } */
+
+    /*        .btn:hover {
+                    background-color: rgba(130, 94, 92);
+                    border: none;
+            }
+         */
+    .subcard {
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        margin-top: 10px;
+        padding: 10px;
+        color: white;
+    }
+
+        .subcard:hover {
+            background-color: rgba(0, 0, 0, 0.5)
+        }
+
+    .table {
+        width: 100%;
+        border-radius: 10px;
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.6); /* Set a subtle background color for headers */
+    }
+
+        .table thead th,
+        .table tbody td {
+            padding: 10px;
+            text-align: left;
+        }
+</style>
+
+
+@code {
+    public int totalsuppliers = 0;
+    public int incitysuppliers = 0;
+    public int outcitysuppliers = 0;
+    List<SuppliersModel> suplist = new List<SuppliersModel>();
+
+    protected void gotoaddsup()
+    {
+        navman.NavigateTo("/addsupplier");
+    }
+
+    protected void updatesupplier(int supplierid)
+    {
+        navman.NavigateTo($"/updatesupplier/{supplierid}");
+    }
+
+    protected void deletesup(int sid)
+    {
+        SuppliersDBControl.deletesupplier(sid);
+        updatedata();
+    }
+
+    protected void updatedata()
+    {
+        suplist = SuppliersDBControl.showsupplierdata();
+        totalsuppliers = Convert.ToInt32(SuppliersDBControl.gettotalsup());
+        incitysuppliers = Convert.ToInt32(SuppliersDBControl.getincitysup());
+        outcitysuppliers = Convert.ToInt32(SuppliersDBControl.getoutcitysup());
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        suplist = SuppliersDBControl.showsupplierdata();
+        totalsuppliers = Convert.ToInt32(SuppliersDBControl.gettotalsup());
+        incitysuppliers = Convert.ToInt32(SuppliersDBControl.getincitysup());
+        outcitysuppliers = Convert.ToInt32(SuppliersDBControl.getoutcitysup());
+        return base.OnInitializedAsync();
+    }
+
+    protected void navtologin()
+    {
+        navman.NavigateTo("/");
+    }
+}

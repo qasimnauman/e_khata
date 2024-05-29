@@ -1,0 +1,93 @@
+﻿@page "/index"
+@inject SessionModel sm;
+@inject NavigationManager navman;
+
+@if(sm.checklogin != null)
+{
+    <PageTitle>Index</PageTitle>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            background-image: url("/bg.jpg");
+        }
+
+            .container {
+                max-width: contain;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .cardhead{
+                font-size: 3rem;
+                margin: 20px;
+            }
+
+            .cardbody{
+                font-size: 1.5rem;
+                margin: 20px;
+                line-height: 2rem;
+            }
+
+            .container-fluid {
+                height: auto;
+            }
+
+            .card {
+                border-radius: 25px;
+                text-align: center;
+                margin: 10px 10px;
+                background-color: rgba(255, 255, 255, 0.2);
+            }
+
+            .card:hover{
+                zoom: 1.1;
+                transition: ease-in-out;
+                    background-color: rgba(0, 0, 0, 0.4);
+            }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="container-fluid">
+            <div class="card text-white">
+                <div class="row cardhead">
+                    <h1 class="text-center">
+                        Welcome to Khata App
+                    </h1>
+                </div>
+                <div class="row cardbody">
+                    <p class="text-center">
+                        Khata App is used to oversee a shop's inventory, which includes manufacturing, ordering, storing, and selling procedures for goods in the marketplace. This involves overseeing the processing and storage of components, raw materials, and final goods.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+}
+else
+{
+    <div class="row">
+        <h3 class="alert-danger text-center">Page Unavailable, Please Login First</h3>
+    </div>
+    <div class="row">
+        <button class="btn btn-outline-warning" type="button" @onclick="navtologin">Login</button>
+    </div>
+}
+
+@code{
+    protected void navtologin()
+    {
+        navman.NavigateTo("/");
+    }
+}
