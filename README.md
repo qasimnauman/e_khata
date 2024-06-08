@@ -45,7 +45,7 @@ The project is organized into the following folders:
 Before running the project, ensure you have set up a SQL Server database with the details of all the tables as in the below attached database daigram and add the connection string to the `DBhelper.cs` file under the Data Controllers.
 
 ```C#
-// DBHelper.js
+// DBHelper.cs
 {
   SqlConnection connection = new SqlConnection("Your Connection String")
 }
